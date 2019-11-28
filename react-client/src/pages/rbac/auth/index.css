@@ -1,0 +1,22 @@
+.rbacuser-view{
+  position: relative;
+}
+.ant-table-fixed-left .ant-table-fixed,
+.ant-table-fixed-right .ant-table-fixed{
+  background: #f0f2f5
+}
+
+.modal-form-main .form-itmes{
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.modal-form-main .form-itmes .itme-labe{
+  width: 136px!important;
+  text-align: right;
+}
+
+.handlestatus-box{
+   /* position: absolute; */
+   transform: translateY(-175%);
+}

@@ -1,0 +1,18 @@
+.gutter-example .ant-row > div {
+  background: transparent;
+  border: 0;
+}
+.gutter-box {
+  background: #1da57a;
+  color: #fff;
+  border-radius: 8px;
+  padding: 5px 12px;
+  min-height: 150px;
+  transition: all 0.4s linear;
+  box-shadow: 0px 0px 5px #8c8f92;
+}
+.gutter-box:hover{
+  box-shadow: 0px 0px 10px $base;
+  transition: all 0.4s linear;
+
+}

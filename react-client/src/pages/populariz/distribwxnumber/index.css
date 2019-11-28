@@ -1,0 +1,30 @@
+.select-main{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.select-main .select-main-btn{
+  margin-left: 12px;
+  
+}
+.form-main{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-main .ant-input-affix-wrapper {
+  width: 300px;
+  margin: 0 8px 20px 0;
+  display: block;
+}
+
+.show-link{
+  width: 355px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: auto
+}

@@ -1,0 +1,18 @@
+.by-header-main{
+  flex: 1;
+  padding-right: 12px;
+  display: flex;
+  justify-content: flex-end;
+}
+.form-main{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-main .ant-input-affix-wrapper {
+  width: 300px;
+  margin: 0 8px 20px 0;
+  display: block;
+}

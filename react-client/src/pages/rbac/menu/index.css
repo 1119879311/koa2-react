@@ -1,0 +1,24 @@
+.menu-view .ant-menu-submenu{
+  position: relative;
+}
+.menu-view .my-menu-itme{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.menu-view .my-menu-itme .operation{
+  position: absolute;
+  z-index: 1;
+  right: 40px;
+  /* top: -5px; */
+}
+
+ .modal-form-main .form-itmes{
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+ .modal-form-main .form-itmes .itme-labe{
+  width: 160px;
+  text-align: right;
+}

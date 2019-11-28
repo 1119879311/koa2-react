@@ -1,0 +1,19 @@
+.addeditarticle-view .from-main{
+  width: 80%;
+  min-width: 800px;
+  max-width: 1200px;
+  margin: 12px auto;
+}
+.addeditarticle-view .gutter-row{
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.addeditarticle-view  .gutter-label{
+  text-align: right;
+  width: 120px;
+  margin-right: 12px;
+}
+.addeditarticle-view .gutter-content{
+  flex: 1;
+}

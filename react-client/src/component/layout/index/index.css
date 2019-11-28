@@ -1,0 +1,38 @@
+.layout-header{
+  background: rgb(255, 255, 255);
+  padding: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.layout-contents{
+  margin: 4px 12px 20px 12px;
+  /* border-top: 1px solid #e8e8e8; */
+  /* background: rgb(255, 255, 255); */
+  min-height: 280px;
+}
+.trigger {
+  font-size: 28px;
+  line-height: 64px;
+  padding: 0 24px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+ .trigger:hover {
+  color: #1890ff;
+}
+
+ .logo {
+  height: 32px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 16px;
+  display: flex;
+  color: rgb(255, 255, 255);
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  text-shadow: rgb(255, 255, 255) 3px 3px 10px;
+  font-weight: 700;
+  font-family: "\5B8B\4F53"
+}

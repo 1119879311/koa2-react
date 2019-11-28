@@ -1,0 +1,11 @@
+
+.modal-form-main .form-itmes{
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  margin-bottom: 12px;
+}
+.modal-form-main .form-itmes .itme-labe{
+  width: 60px;
+  /* flex-flow: 1 */
+}
