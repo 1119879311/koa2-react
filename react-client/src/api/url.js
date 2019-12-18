@@ -1,10 +1,10 @@
-const serverApi = process.env.NODE_ENV ==="production"?"https://wx.bylives.com":"http://127.0.0.1:3001";
+const serverApi = process.env.NODE_ENV ==="production"?"https://wx.bylives.com":"http://127.0.0.1:3002";
 export let uploadServerHost = serverApi
 export let baseUrl = serverApi+"/api";
 
 //1.0登录 
 export let adminLogin = `/login`;
-
+export let adminCode = "/code"
 // 管理员个人中心
 // 1.1 修改密码
 export let modifyUserpwd = `/managerCenter/modifypwd`;

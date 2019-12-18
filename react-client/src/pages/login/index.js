@@ -5,8 +5,26 @@ import axios from '../../api/axios';
 import { connect } from 'react-redux';
 import {UpdateUserInfo,UpdateAppToken} from "../../store/action"
 class index extends Component {
+  state = {
+    code:"",
+    svgCode:"",
+    code_token:""
+  }
+   // 同步更新state 的值
+   handleAsynChange =(key,value,obj)=>{
+    console.log(key,value)
+    if(obj){
+      let objval = this.state[obj];
+      objval[key] = value;
+      this.setState({ [obj]:objval});
+    }else{
+      this.setState({ [key]:value});
+    }
+    
+  }
   // 判断是否已登录，重定向 到/admin
   componentDidMount(){
+    this.getCode();
     sessionStorage.clear();
     // var {history:{replace}} = this.props;
     // var token = sessionStorage.getItem("token");
@@ -14,16 +32,27 @@ class index extends Component {
     //  replace("/admin")
     // }
   }
+  getCode(){
+     axios.GET("adminCode").then(res=>{
+      //  console.log(res)
+       let {code_token} = res.headers;
+       let svgCode = res.data;
+       this.setState({code_token,svgCode})
+     })
+  }
+
   // 提交登录数据
   handleSubmit = e => {
     e.preventDefault();
     var {history:{replace}} = this.props;
-    this.props.form.validateFields((err, {username,password}) => {
+    this.props.form.validateFields((err, {username,password,code}) => {
       if (!err) {
-        var postData = {name:username,password}
+        let {code_token} = this.state;
+        var postData = {name:username,password,code,code_token}
         message.success("正在登陆中...")
         axios.POST("adminLogin",postData).then(result=>{
           // isRoot:res.isRoot,username:res.name,userId:token
+          this.getCode();
           var {data,status,mssage} = result.data;
           if(status){
             // sessionStorage.setItem("token",data.token);
@@ -73,6 +102,24 @@ class index extends Component {
                 />,
               )}
             </Form.Item>
+            
+            <Form.Item>
+              {getFieldDecorator('code', {
+                rules: [{ required: true, message: 'Please input your code!' }],
+              })(
+                <div style={{display:"flex",alignItems:"start"}}>
+                <Input     allowClear   placeholder="Code"/>
+               <span style={{marginLeft:"12px",display: "inherit"}} onClick={()=>this.getCode()} dangerouslySetInnerHTML={{ __html: this.state.svgCode }}></span>
+               </div>
+              )}
+            </Form.Item>
+
+
+              {/* <div style={{display:"flex",alignItems:"start"}}>
+              <Input   value={this.state.code}   allowClear onChange={e => {this.handleAsynChange('code', e.target.value)}} />
+             <span style={{marginLeft:"12px"}} onClick={()=>this.getCode()} dangerouslySetInnerHTML={{ __html: this.state.svgCode }}></span>
+
+              </div> */}
             <Form.Item className="itme-login-button">
               <Button type="primary" htmlType="submit" className="login-form-button">
                 登录

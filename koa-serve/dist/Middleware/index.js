@@ -9,6 +9,7 @@ const { logsInfo } = imports("Middleware/logs");
 
 module.exports = app => {
     app.use(Koa2cors()).use(bodyparse()).use(logsInfo).use(koaStatic(path.join('.', staticPath))).use(async (ctx, next) => {
+        ctx.set("Access-Control-Expose-Headers", "code_token");
         ctx.Model = model;
         ctx.success = success;
         ctx.error = error;

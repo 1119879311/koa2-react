@@ -84,7 +84,10 @@ let index = (_dec = Controller("/post"), _dec2 = GET("/"), _dec3 = GET("/detail"
                 ctx.body = await ctx.send((await tabModel.groupTab(ctx.request.query)));
                 break;
             case "all":
-                ctx.body = await ctx.send({ data: { cate: (await cateModel.groupCate(ctx.request.query)).data, tab: (await tabModel.groupTab(ctx.request.query)).data } });
+                ctx.body = await ctx.send({ data: {
+                        cate: (await cateModel.groupCate(ctx.request.query)).data,
+                        tab: (await tabModel.groupTab(ctx.request.query)).data
+                    } });
                 break;
             default:
                 ctx.body = await ctx.error("type is require");
