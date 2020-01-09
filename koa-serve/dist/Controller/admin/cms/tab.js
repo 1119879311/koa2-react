@@ -33,7 +33,7 @@ const { Controller, POST, GET } = imports("Lib/router");
 const tabModel = imports("models/tab");
 const { userAuth, roleAuth } = imports("Lib/permission");
 
-let index = (_dec = Controller("/tab"), _dec2 = GET("/"), _dec3 = POST("/add"), _dec4 = userAuth(), _dec5 = roleAuth(), _dec6 = POST("/swtich"), _dec7 = userAuth(), _dec8 = roleAuth(), _dec9 = POST("/update"), _dec10 = userAuth(), _dec11 = roleAuth(), _dec12 = POST("/delete"), _dec13 = userAuth(), _dec14 = roleAuth(), _dec(_class = (_class2 = class index {
+let index = (_dec = Controller("/tab"), _dec2 = GET("/"), _dec3 = userAuth(), _dec4 = roleAuth(), _dec5 = POST("/add"), _dec6 = userAuth(), _dec7 = roleAuth(), _dec8 = POST("/swtich"), _dec9 = userAuth(), _dec10 = roleAuth(), _dec11 = POST("/update"), _dec12 = userAuth(), _dec13 = roleAuth(), _dec14 = POST("/delete"), _dec(_class = (_class2 = class index {
     async getAll(ctx, next) {
         var { status } = ctx.request.query;
         ctx.body = await ctx.send((await tabModel.findAll(status)));

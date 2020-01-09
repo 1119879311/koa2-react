@@ -18,7 +18,7 @@ class request{
                     resolve(result);
                 })
 
-            }).on("error",()=>{
+            }).on("error",(err)=>{
                 reject(err);
             })
 

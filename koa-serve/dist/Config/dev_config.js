@@ -1,5 +1,5 @@
 module.exports = {
-    port: 3002, //服务run端口
+    port: 9000, //服务run端口
     routerPrefix: "/api", //所有的接口一个前缀
     staticPath: "/theme", //静态资源根目录
     entryPath: process.env.NODE_ENV === "development" ? "src" : "dist",

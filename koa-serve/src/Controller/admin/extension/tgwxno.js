@@ -17,9 +17,9 @@ class index{
    * @param {*} ctx 
    * @param {*} next 
    */
-    @GET("/getHostPath") 
     @userAuth()
     @roleAuth()
+    @GET("/getHostPath") 
     async getHostPath(ctx,next){
       ctx.body = await ctx.send( await wxnoModel.getHostPathWxno());
         
@@ -29,9 +29,9 @@ class index{
    * @param {*} ctx 
    * @param {*} next 
    */
-    @POST("/saveHostPath") 
     @userAuth()
     @roleAuth()
+    @POST("/saveHostPath") 
     async saveHostPath(ctx,next){
       ctx.body = await ctx.send( await wxnoModel.saveHostPath(ctx.request.body));
 
@@ -41,9 +41,9 @@ class index{
    * @param {*} ctx 
    * @param {*} next 
    */
-    @POST("/saveWxno") 
     @userAuth()
     @roleAuth()
+    @POST("/saveWxno") 
     async saveWxno(ctx,next){
       let {name,path_id,host_id}=ctx.request.body;
       if(!name)  return ctx.error("name is require");
@@ -56,9 +56,9 @@ class index{
    * @param {*} ctx 
    * @param {*} next 
    */
-    @POST("/delWxno") 
     @userAuth()
     @roleAuth()
+    @POST("/delWxno") 
     async delWxno(ctx,next){
       ctx.body = await ctx.send( await wxnoModel.delWxno(ctx.request.body));        
         

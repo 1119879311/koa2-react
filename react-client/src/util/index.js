@@ -2,6 +2,7 @@
     //如 (new Date(),yyyy-MM-dd)//2017-6-28
     //如 (new Date(),yyyy-MM-dd hh:mm:ss)//2017-6-28 15:02:30
     export  let dataFormat=  (date, format ="yyyy-MM-dd hh:mm:ss") =>{//参数一:时间，参数，要显示的时间格式
+      if(!date) return date;
       date = new Date(Number(date));
       if (Object.prototype.toString.call(date) !== "[object Date]") return false;
 

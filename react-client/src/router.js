@@ -120,5 +120,14 @@ export const allRouter =  [
         title:"登录日志",
         name:"logslogin",
         isAuthName:"logslogin"
+    },
+      // 5.日志管理
+    // 5.1 精美句子
+    { 
+        path:"/admin/resourcejuzi",
+        component:Loadable({loader: () => import('./pages/resource/juzi/index'), loading: MyLoadingComponent}),
+        title:"精美句子",
+        name:"resourcejuzi",
+        isAuthName:"resourcejuzi"
     }
   ]

@@ -82,11 +82,14 @@ module.exports = class {
      * 
      */
     static async findAll(options={}){
-        var {a_status=1,sort,page=1,limit=10} = options;
-        var where = {};
-        a_status!=0? (where[`a.status`] = a_status):'';
+        var {a_status=1,page=1,limit=30,search=""} = options;
+       
+        var where = a_status!=0?{[`a.status`]:a_status}:{};
+        if(search){
+            where = Object.assign(where,{__complex:{"a.title|a.remark|c.name":["like",`%${search}%`],"_logic":"OR"}})  
+        }
         try {
-            return await this.findCommon({where,order:sort,limit:[page,limit]});
+            return await this.findCommon({where,limit:[page,limit]});
         } catch (error) {
             return await {errmsg:"server is error"}
         }
@@ -104,7 +107,7 @@ module.exports = class {
          * 
      */
     static async findCateAll(options={}){
-        var {cateId="",a_status=1,c_status=1,sort,page=1,limit=10} = options;
+        var {cateId="",a_status=1,c_status=1,sort,page=1,limit=30} = options;
         if(!cateId) return await {status:false,mssage:"id is required"};
         // 找cate子集
         var cidArr = await model.select({ table:"tk_cate",field:"id,pid",where:{status:1,id:[">=",cateId]}});
@@ -134,7 +137,7 @@ module.exports = class {
          * 
      */
     static async findTabAll(options={}){
-         let {tabId="",t_status=1,a_status=1,sort,page=1,limit=10} = options;
+         let {tabId="",t_status=1,a_status=1,sort,page=1,limit=30} = options;
          if(!tabId) return await {status:false,mssage:"id is required"};
          //tk_tab_article（中间表） 根据tabid查对应的postid  
          var tabWhere = {"t_id":tabId};
@@ -163,9 +166,14 @@ module.exports = class {
          * 
      */
     static async findSearchAll(options={}){
-        let {search="",page=1,limit=10} = options;
+        let {search="",page=1,limit=30,a_status=1} = options;
         if(!search) return await {status:false,mssage:"search key is required"};
-        var where = [{"a.title|a.remark|c.name":["like",`%${search}%`]},{"a.status":1},"and"];
+        if(a_status==0){
+            var where = {"a.title|a.remark|c.name":["like",`%${search}%`]};
+        }else{
+            var where = [{"a.title|a.remark|c.name":["like",`%${search}%`]},{"a.status":status},"and"];
+        }
+       
         try {
             return await this.findCommon({where,limit:[page,limit]}); 
         } catch (error) {
@@ -174,12 +182,12 @@ module.exports = class {
     }
 
     static async findCommon(option = {where:"",order:{id:"desc"},limit:""}){
-        var order =  option.order==undefined ?{[`a.sort`]:"asc",[`a.id`]:"desc"}:option.order;
+        // var order =  option.order==undefined ?{[`a.sort`]:"asc",[`a.id`]:"desc"}:option.order;
         return  model.pageSelect({
             table:"tk_article as a",
-            field:"a.id,a.title,a.cid,a.thumimg,a.remark,a.readcount,a.status,a.createtime,c.name as cname,c.status as cstatus",
+            field:"a.id,a.title,a.cid,a.thumimg,a.remark,a.readcount,a.status,a.sort,a.createtime,c.name as cname,c.status as cstatus",
             join:[{join:'left',table:"tk_cate as c",on:"c.id = a.cid"} ],
-            order:order,
+            order:{[`a.sort`]:"desc",[`a.id`]:"desc",[`a.readcount`]:"desc"},
             limit:option.limit,
             where:option.where
         })

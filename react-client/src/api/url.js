@@ -1,4 +1,4 @@
-const serverApi = process.env.NODE_ENV ==="production"?"https://wx.bylives.com":"http://127.0.0.1:3002";
+const serverApi = process.env.NODE_ENV ==="production"?"https://wx.bylives.com":"http://127.0.0.1:9000";
 export let uploadServerHost = serverApi
 export let baseUrl = serverApi+"/api";
 
@@ -84,3 +84,13 @@ export let rbacMenuDel = `/menu/delete`;
 // 管理日志
 //  1.登录日志
 export let logsLogin = `/logslogin`;
+
+
+// 资源管理模块
+
+// 句子管理
+export let resourcejuzi = `/juzi`;
+export let juziAdd = `/juzi/add`;
+export let juziUpdate = `/juzi/update`;
+export let juziSwtich = `/juzi/swtich`;
+export let juziDel = `/juzi/delete`;

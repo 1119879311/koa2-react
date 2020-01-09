@@ -7,12 +7,12 @@ module.exports = class {
         if (typeof roleId == "string") roleId = [roleId];
         let where = { "ra.r_id": ["in", roleId] };
         if (status !== "") where[`a.status`] = status;
-        return model.select({ table: "tk_auth as a", field: "a.*", where,
+        return model.select({ table: "tk_auth as a", field: "a.*", distinct: true, where,
             join: { table: "tk_role_auth as ra", join: "right", on: "a.id=ra.a_id" } });
     }
     // 根据状态查所有权限行为
     static async findAll(status) {
-        return await model.select({ table: "tk_auth", where: { status } });
+        return await model.select({ table: "tk_auth", order: { groupName: "desc", id: "desc" }, where: { status } });
     }
     //添加
     static async add(options = {}) {

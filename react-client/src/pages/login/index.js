@@ -52,7 +52,7 @@ class index extends Component {
         message.success("正在登陆中...")
         axios.POST("adminLogin",postData).then(result=>{
           // isRoot:res.isRoot,username:res.name,userId:token
-          this.getCode();
+          
           var {data,status,mssage} = result.data;
           if(status){
             // sessionStorage.setItem("token",data.token);
@@ -66,6 +66,7 @@ class index extends Component {
             }, 1000);
 
           }else{
+            this.getCode();
             message.error(mssage||"登录失败")
           }
         }).catch(error=>{

@@ -42,6 +42,7 @@ class layoutTabs extends Component {
   }
   //路由变化时判断
   componentWillReceiveProps(nextProps){
+    
     //先判断是否在tabs；在不处理，不在则在路由中找出加入
     if(entryIndex){
       entryIndex = null;

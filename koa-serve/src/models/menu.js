@@ -7,7 +7,7 @@ module.exports = class {
         if(typeof roleId=="string") roleId=[roleId]
         let where = {"mr.r_id":["in",roleId]};
         if(status!=="") where[`m.status`] =status;
-        return model.select({table:"tk_menu as m",field:"m.*",where,
+        return model.select({table:"tk_menu as m",field:"m.*",distinct:true,where,
         join:{table:"tk_menu_role as mr",join:"right",on:"m.id=mr.m_id"},
         order:["m.sort"]});
     }

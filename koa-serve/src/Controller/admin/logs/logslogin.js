@@ -11,7 +11,5 @@ class index extends roleBase{
         let option =  ctx.request.query;
        ctx.body = await ctx.send(await logsLoginModle.findAll(option))  
     }
-  
-   
 }
 module.exports = index;

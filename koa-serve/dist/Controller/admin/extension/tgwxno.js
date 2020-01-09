@@ -32,7 +32,7 @@ function _applyDecoratedDescriptor(target, property, decorators, descriptor, con
 const { Controller, POST, GET } = imports("Lib/router");
 const { userAuth, roleAuth } = imports("Lib/permission");
 const wxnoModel = imports("models/wxno");
-let index = (_dec = Controller("/extension"), _dec2 = GET("/getRadomWxno"), _dec3 = GET("/getHostPath"), _dec4 = userAuth(), _dec5 = roleAuth(), _dec6 = POST("/saveHostPath"), _dec7 = userAuth(), _dec8 = roleAuth(), _dec9 = POST("/saveWxno"), _dec10 = userAuth(), _dec11 = roleAuth(), _dec12 = POST("/delWxno"), _dec13 = userAuth(), _dec14 = roleAuth(), _dec(_class = (_class2 = class index {
+let index = (_dec = Controller("/extension"), _dec2 = GET("/getRadomWxno"), _dec3 = userAuth(), _dec4 = roleAuth(), _dec5 = GET("/getHostPath"), _dec6 = userAuth(), _dec7 = roleAuth(), _dec8 = POST("/saveHostPath"), _dec9 = userAuth(), _dec10 = roleAuth(), _dec11 = POST("/saveWxno"), _dec12 = userAuth(), _dec13 = roleAuth(), _dec14 = POST("/delWxno"), _dec(_class = (_class2 = class index {
   async getRadomWxno(ctx, next) {
     ctx.body = await ctx.send((await wxnoModel.getRadomWxno(ctx)));
   }

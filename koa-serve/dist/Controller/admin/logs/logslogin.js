@@ -39,7 +39,6 @@ let index = (_dec = Controller("/logslogin"), _dec2 = GET("/"), _dec(_class = (_
         let option = ctx.request.query;
         ctx.body = await ctx.send((await logsLoginModle.findAll(option)));
     }
-
 }, (_applyDecoratedDescriptor(_class2.prototype, "findlogin", [_dec2], Object.getOwnPropertyDescriptor(_class2.prototype, "findlogin"), _class2.prototype)), _class2)) || _class);
 
 module.exports = index;

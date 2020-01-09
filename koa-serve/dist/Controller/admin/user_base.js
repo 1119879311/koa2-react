@@ -32,5 +32,5 @@ function _applyDecoratedDescriptor(target, property, decorators, descriptor, con
 const { userAuth } = imports("Lib/permission");
 
 module.exports = (_dec = userAuth(), (_class = class {
-    async __before() {}
-}, (_applyDecoratedDescriptor(_class.prototype, "__before", [_dec], Object.getOwnPropertyDescriptor(_class.prototype, "__before"), _class.prototype)), _class));
+    async __before__(ctx, next) {}
+}, (_applyDecoratedDescriptor(_class.prototype, "__before__", [_dec], Object.getOwnPropertyDescriptor(_class.prototype, "__before__"), _class.prototype)), _class));

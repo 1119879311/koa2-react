@@ -1,4 +1,4 @@
-var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _dec9, _dec10, _dec11, _dec12, _dec13, _dec14, _dec15, _dec16, _dec17, _dec18, _dec19, _dec20, _class, _desc, _value, _class2;
+var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _dec9, _dec10, _dec11, _dec12, _dec13, _dec14, _dec15, _dec16, _dec17, _dec18, _dec19, _dec20, _dec21, _dec22, _class, _desc, _value, _class2;
 
 function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
     var desc = {};
@@ -36,7 +36,7 @@ const tabModel = imports("models/tab");
 const logicPost = imports("logic/post");
 const { userAuth, roleAuth } = imports("Lib/permission");
 
-let index = (_dec = Controller("/post"), _dec2 = GET("/"), _dec3 = GET("/detail"), _dec4 = GET("/groupType"), _dec5 = POST("/add"), _dec6 = userAuth(), _dec7 = roleAuth(), _dec8 = POST("/swtich"), _dec9 = userAuth(), _dec10 = roleAuth(), _dec11 = POST("/update"), _dec12 = userAuth(), _dec13 = roleAuth(), _dec14 = POST("/delete"), _dec15 = POST("/uploadThum"), _dec16 = userAuth(), _dec17 = roleAuth(), _dec18 = POST("/uploadueimg"), _dec19 = userAuth(), _dec20 = roleAuth(), _dec(_class = (_class2 = class index {
+let index = (_dec = Controller("/post"), _dec2 = GET("/"), _dec3 = GET("/detail"), _dec4 = GET("/groupType"), _dec5 = userAuth(), _dec6 = roleAuth(), _dec7 = POST("/add"), _dec8 = userAuth(), _dec9 = roleAuth(), _dec10 = POST("/swtich"), _dec11 = userAuth(), _dec12 = roleAuth(), _dec13 = POST("/update"), _dec14 = userAuth(), _dec15 = roleAuth(), _dec16 = POST("/delete"), _dec17 = userAuth(), _dec18 = roleAuth(), _dec19 = POST("/uploadThum"), _dec20 = userAuth(), _dec21 = roleAuth(), _dec22 = POST("/uploadueimg"), _dec(_class = (_class2 = class index {
     async getAll(ctx, next) {
         let option = ctx.request.query;
         // 分类下的
@@ -47,10 +47,10 @@ let index = (_dec = Controller("/post"), _dec2 = GET("/"), _dec3 = GET("/detail"
         if (option.tabId) {
             return ctx.body = await ctx.send((await postModel.findTabAll(option)));
         }
-        // 搜索下的
-        if (option.search) {
-            return ctx.body = await ctx.send((await postModel.findSearchAll(option)));
-        }
+        // // 搜索下的
+        // if(option.search){
+        //     return  ctx.body = await ctx.send(await postModel.findSearchAll(option));
+        // }
         // 所有的
         ctx.body = await ctx.send((await postModel.findAll(option)));
     }
@@ -144,6 +144,6 @@ let index = (_dec = Controller("/post"), _dec2 = GET("/"), _dec3 = GET("/detail"
         ctx.body = await postModel.uploadUeImg(ctx);
     }
 
-}, (_applyDecoratedDescriptor(_class2.prototype, "getAll", [_dec2], Object.getOwnPropertyDescriptor(_class2.prototype, "getAll"), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, "findOne", [_dec3], Object.getOwnPropertyDescriptor(_class2.prototype, "findOne"), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, "type", [_dec4], Object.getOwnPropertyDescriptor(_class2.prototype, "type"), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, "add", [_dec5, _dec6, _dec7], Object.getOwnPropertyDescriptor(_class2.prototype, "add"), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, "swtich", [_dec8, _dec9, _dec10], Object.getOwnPropertyDescriptor(_class2.prototype, "swtich"), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, "update", [_dec11, _dec12, _dec13], Object.getOwnPropertyDescriptor(_class2.prototype, "update"), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, "del", [_dec14], Object.getOwnPropertyDescriptor(_class2.prototype, "del"), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, "uploadThum", [_dec15, _dec16, _dec17], Object.getOwnPropertyDescriptor(_class2.prototype, "uploadThum"), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, "uploadUeImg", [_dec18, _dec19, _dec20], Object.getOwnPropertyDescriptor(_class2.prototype, "uploadUeImg"), _class2.prototype)), _class2)) || _class);
+}, (_applyDecoratedDescriptor(_class2.prototype, "getAll", [_dec2], Object.getOwnPropertyDescriptor(_class2.prototype, "getAll"), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, "findOne", [_dec3], Object.getOwnPropertyDescriptor(_class2.prototype, "findOne"), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, "type", [_dec4], Object.getOwnPropertyDescriptor(_class2.prototype, "type"), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, "add", [_dec5, _dec6, _dec7], Object.getOwnPropertyDescriptor(_class2.prototype, "add"), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, "swtich", [_dec8, _dec9, _dec10], Object.getOwnPropertyDescriptor(_class2.prototype, "swtich"), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, "update", [_dec11, _dec12, _dec13], Object.getOwnPropertyDescriptor(_class2.prototype, "update"), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, "del", [_dec14, _dec15, _dec16], Object.getOwnPropertyDescriptor(_class2.prototype, "del"), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, "uploadThum", [_dec17, _dec18, _dec19], Object.getOwnPropertyDescriptor(_class2.prototype, "uploadThum"), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, "uploadUeImg", [_dec20, _dec21, _dec22], Object.getOwnPropertyDescriptor(_class2.prototype, "uploadUeImg"), _class2.prototype)), _class2)) || _class);
 
 module.exports = index;

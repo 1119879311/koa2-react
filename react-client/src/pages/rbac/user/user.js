@@ -22,6 +22,7 @@ function user_type_util(type){
 
 export class index extends Component {
   state = {
+    loading:false,
     //  列表数据
      tableData:[],
      selectedRowKeys :[],//选择的key
@@ -112,8 +113,12 @@ export class index extends Component {
   }
   // 获取表格数据
    getTableData=()=>{
+    this.setState({loading:true})
+
     axios.GET("manager").then(res=>{
       let {status,data} = res.data;
+      this.setState({loading:false})
+
       console.log(data)
       if(status){
         this.setState({tableData:data,multipleSelection:[],selectedRowKeys:[]})
@@ -261,15 +266,19 @@ export class index extends Component {
     this.getallRoleData();
   }
   render() {
-    const { selectedRowKeys,multipleSelection,tableData ,modalTitle,addEditUserIshow,userFromData } = this.state;
+    const {loading, selectedRowKeys,multipleSelection,tableData ,modalTitle,addEditUserIshow,userFromData } = this.state;
     const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
     };
     return (
       <div className="rbacuser-view">
+       <div className="col-12 m-flex search-wrap">
+           <Button type="primary" icon="sync" onClick={()=>this.getTableData()}>刷新</Button>
+        </div>
         {/* 表格 */}
         <Table
+            loading={loading}
             size="small"
             style={{"margin":"12px auto"}}
             rowKey = {row=>row.id}

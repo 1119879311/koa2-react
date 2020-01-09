@@ -1,37 +1,43 @@
 "use strict";
-const {resolve}  = require("path");
+const path = require("path");
 const fs = require("fs");
-let entryPath = process.env.NODE_ENV==="development"?"src":"dist";
-console.log(process.env.NODE_ENV+"环境:执行目录"+entryPath)
-let ctrPath = resolve(entryPath,'Controller');
+const koa_Router = require("koa-router");
+const registerRouter = require("./Lib/router/registerRouter");
+const koaRouter = new koa_Router({
+    prefix: "/api"
+});
 
-module.exports = (app)=>{
-    let  loadCtr = (rootPaths)=>{
-        try {
-            var allfile = fs.readdirSync(rootPaths);   
-            allfile.forEach((file)=>{
-                var filePath = resolve(rootPaths,file)
-                if(fs.lstatSync(filePath).isDirectory()){
-                    loadCtr(filePath)
-                }else{
-                  let r =  require(filePath);
-                  if(r&&r.router&&r.router.routes){
-                      try {
-                        app
-                        .use(r.router.routes())
-                      } catch (error) {
-                          console.log(filePath)
-                      }
-                  }else{
-                      // console.log("miss routes:--filename:"+filePath)
-                  }
-                }
-            }) 
-        } catch (error) {
-            console.log(error)
-            console.log("no such file or dir :---- "+rootPaths)
-        } 
+const Controller = "Controller";
+const entryCtr = path.resolve(getEntryRoot(), Controller);
+
+function getEntryRoot() {
+    let entryRoot = __dirname.split("\\");
+    let proRoot = process.cwd().split("\\");
+    if (entryRoot.length == proRoot.length) {
+        return __dirname;
     }
-    loadCtr(ctrPath);
-
+    return [...proRoot, entryRoot[proRoot.length]].join("\\");
 }
+
+module.exports = (app) => {
+    const loadinCtr = (entryPath) => {
+        try {
+            let allFile = fs.readdirSync(entryPath);
+            allFile.forEach((file) => {
+                let filePath = path.resolve(entryPath, file);
+                if (fs.lstatSync(filePath).isDirectory()) {
+                    loadinCtr(filePath);
+                }
+                else {
+                    let serviceCtr = require(filePath);
+                    registerRouter(app, koaRouter, serviceCtr);
+                }
+            });
+        }
+        catch (error) {
+            console.log(error);
+            console.log("no such file or dir :---- " + entryPath);
+        }
+    };
+    loadinCtr(entryCtr);
+};

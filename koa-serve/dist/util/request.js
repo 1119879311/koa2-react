@@ -18,7 +18,7 @@ let request = class request {
                     result = Buffer.concat(bufferStr).toString("utf-8");
                     resolve(result);
                 });
-            }).on("error", () => {
+            }).on("error", err => {
                 reject(err);
             });
         });

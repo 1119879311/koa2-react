@@ -1,12 +1,18 @@
 import React, { Component } from 'react'
-import { Table,message } from 'antd';
+import { Table,message ,Input,Select ,Button} from 'antd';
 import axios  from '../../../api/axios'
 import {dataFormat,leveRecurOne,filterChrildId} from "../../../util"
 import AuthBotton from "../../../component/authButton/indexs";
 import AddEditCate from "./AddEditCate"
 import "./index.css"
+const {Option} = Select
+
 export class index extends Component {
   state = {
+    search_key:"",
+    status:"",
+    loading:false,
+    rendTableData:[],
     //  列表数据
      tableData:[],
      selectedRowKeys :[],//选择的key
@@ -90,14 +96,16 @@ export class index extends Component {
     ]
   }
   // 获取表格数据
-   getTableData=()=>{
-    axios.GET("cmsCate",{status:0}).then(res=>{
+   getTableData= ()=>{
+    this.setState({loading:true})
+    axios.GET("cmsCate",{status:0}).then(async res=>{
       let {status,data} = res.data;
-    
+       this.setState({loading:false})
       if(status){
         data = leveRecurOne(data)
         console.log(data)
-        this.setState({tableData:data,multipleSelection:[],selectedRowKeys:[]})
+        await this.setState({tableData:data,multipleSelection:[],selectedRowKeys:[]})
+        await this.onSubmitSearch();
       }else{
 
       }
@@ -208,28 +216,61 @@ export class index extends Component {
     }
     this.setState({ selectedRowKeys ,multipleSelection});
   };
- 
+  onSubmitSearch= async ()=>{
+    let {search_key,status,tableData} =await this.state;
+    let resData = tableData;
+    if(status){
+       resData = resData.filter(itme=>itme.status===status) 
+    }
+    if(search_key){
+        resData = resData.filter(itme=>{
+          return itme.name.includes(search_key)
+            
+      })
+    }
+    this.setState({rendTableData:resData})  
+  }
   // 组件挂载时
   componentDidMount(){
     this.getTableData();
     
   }
   render() {
-    const { selectedRowKeys,multipleSelection,tableData,modalTitle,addEditCateIshow,cateFromData } = this.state;
+    const { loading,selectedRowKeys,multipleSelection,rendTableData,modalTitle,addEditCateIshow,cateFromData } = this.state;
     const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
     };
     return (
       <div className="rbacuser-view">
+       {/* 搜索 */}
+       <div className="col-12 m-flex search-wrap">
+           <Input placeholder="关键词" allowClear style={{width:"240px"}}
+            onChange={(e)=>this.handleAsynChange('search_key',e.target.value)}/>
+            <div>
+             
+              <span>状态 : </span>
+              <Select placeholder="请选择" allowClear
+                style={{width:"240px"}}
+                value={this.state.status}
+                onChange={(e)=>this.handleAsynChange('status',e)}
+                >
+                <Option value={1}>正常</Option>
+                <Option value={2}>禁用</Option>
+              </Select>
+            </div>
+           <Button icon="search" type="primary" onClick={this.onSubmitSearch}>搜索</Button>
+           <Button type="primary" icon="sync" onClick={()=>this.getTableData()}>刷新</Button>
+        </div>
         {/* 表格 */}
         <Table
+            loading={loading}
             size="small"
             style={{"margin":"6px auto"}}
             rowKey = {row=>row.id}
             columns={this.tableColumns}
             rowSelection={rowSelection}
-            dataSource={tableData}
+            dataSource={rendTableData}
             pagination={{ pageSize: 30 }}
             scroll={{ x: 1050 }}
             bordered

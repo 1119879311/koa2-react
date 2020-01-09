@@ -12,10 +12,9 @@ class index{
         ctx.body = await ctx.send( await tabModel.findAll(status));
     }
   
-
-    @POST("/add")
     @userAuth()
     @roleAuth()
+    @POST("/add")
     async add(ctx,next){
        ctx.body= await ctx.send( await tabModel.add(ctx.request.body) )
     }
@@ -25,26 +24,26 @@ class index{
      * @param {object} ctx.request.body 
      * @param {array} data =>[{id:1,status:1}]
      * */
-    @POST("/swtich")
     @userAuth()
     @roleAuth()
+    @POST("/swtich")
     async swtich(ctx,next){
         var {data} = ctx.request.body;
         ctx.body= await ctx.send( await tabModel.switch(data) )
     }
 
     //单个更新所有
-    @POST("/update")
     @userAuth()
     @roleAuth()
+    @POST("/update")
     async update(ctx,next){
         ctx.body= await ctx.send( await tabModel.update(ctx.request.body) )      
     }
 
     // 删除一个
-    @POST("/delete")
     @userAuth()
     @roleAuth()
+    @POST("/delete")
     async del(ctx,next){
         var {id} = ctx.request.body;
         ctx.body= await ctx.send( await tabModel.del(id) )

@@ -1,16 +1,20 @@
 import React, { Component } from 'react'
-import { Table,message } from 'antd';
+import { Table,message ,Input,Button,Select} from 'antd';
 import axios  from '../../../api/axios'
 import {dataFormat} from "../../../util"
 import AuthBotton from "../../../component/authButton/indexs";
 import "./index.css"
+const { Option } = Select;
+
 export default class  extends Component {
   state = {
     //  列表数据
      tableData:[],
      totalData:0,
      currentPage:1,
-     pageSize:15,
+     pageSize:30,
+     search:"",//搜索关键词
+     status:'',
      selectedRowKeys :[],//选择的key
      multipleSelection:[],//选择的数据
   }
@@ -79,22 +83,27 @@ export default class  extends Component {
     ]
   }
   // 获取表格数据
-   getTableData=(page)=>{
-     let {pageSize} = this.state;
-    axios.GET("cmsArticle",{page,limit:pageSize,a_status:0}).then(res=>{
-      let {status,data,count} = res.data;
-      console.log(data)
-      if(status){
-        this.setState({tableData:data,totalData:count,multipleSelection:[],selectedRowKeys:[]})
-      }else{
+   getTableData=async ()=>{
+      this.setState({loading:true})
 
-      }
+      let {pageSize,currentPage,search,status} =await this.state;
+      axios.GET("cmsArticle",{page:currentPage,limit:pageSize,a_status:status||0,search}).then(res=>{
+        let {status,data,count} = res.data;
+        this.setState({loading:false})
+        console.log(data)
+        if(status){
+          this.setState({tableData:data,totalData:count,multipleSelection:[],selectedRowKeys:[]})
+        }else{
+
+        }
     })
   }
  //点击分页
- onChangePage=(currentPage)=>{
-   this.getTableData(currentPage)
-   this.setState({currentPage})
+ onChangePage=async (currentPage)=>{
+  // await this.getTableData(currentPage)
+  // await this.setState({currentPage})
+  await this.setState({currentPage})
+  await this.getTableData()
  }
    
   // 编辑和添加 按钮
@@ -167,22 +176,46 @@ export default class  extends Component {
     }
     this.setState({ selectedRowKeys ,multipleSelection});
   };
- 
+     // 点击搜索
+  onSubmitSearch = async ()=>{
+    await this.setState({currentPage:1})
+    await this.getTableData();
+
+  }
   // 组件挂载时
   componentDidMount(){
-    this.getTableData(1);
+    this.getTableData();
     
   }
   render() {
-    const { selectedRowKeys,multipleSelection,tableData} = this.state;
+    const { loading,selectedRowKeys,multipleSelection,tableData} = this.state;
     const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
     };
     return (
       <div className="rbacuser-view">
+         {/* 搜索 */}
+         <div className="col-12 m-flex search-wrap">
+           <Input placeholder="关键词/标题/分类" allowClear style={{width:"240px"}}
+            onChange={(e)=>this.handleAsynChange('search',e.target.value)}/>
+            <div>
+             
+              <span>状态 : </span>
+              <Select placeholder="请选择" allowClear
+                style={{width:"240px"}}
+                value={this.state.status}
+                onChange={(e)=>this.handleAsynChange('status',e)}>
+                <Option value={1}>正常</Option>
+                <Option value={2}>禁用</Option>
+              </Select>
+            </div>
+
+           <Button icon="search" type="primary" onClick={this.onSubmitSearch}>搜索</Button>
+        </div>
         {/* 表格 */}
         <Table
+            loading={loading}
             size="small"
             style={{"margin":"12px auto"}}
             rowKey = {row=>row.id}

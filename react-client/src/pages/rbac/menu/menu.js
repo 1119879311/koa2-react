@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
-import {Menu, Icon,message } from 'antd';
+import {Menu, Icon,message,Button,Spin  } from 'antd';
 import axios  from '../../../api/axios'
 import "./index.css"
 import AddEditMeun from "./AddEditMeun";
@@ -37,6 +37,7 @@ const { SubMenu } = Menu;
   constructor(props){
     super(props)
     this.state =  {
+      loading:false,
       menuAllList:[],
       pathname: [],
       modalTitle:"",
@@ -46,10 +47,13 @@ const { SubMenu } = Menu;
   }
   // 获取菜单列表数据所有
   getAllMenuData(){
-    axios.GET("rbacMenu").then(result=>{
+    this.setState({loading:true})
+    axios.GET("rbacMenu").then( async result=>{
+      this.setState({loading:false})
+
       var  {status,data} = result.data;
       if(status){
-        this.setState({menuAllList:data})
+       await this.setState({menuAllList:data})
       }
     }).catch(error=>{
       console.log()
@@ -203,14 +207,20 @@ const { SubMenu } = Menu;
   render() {
     return (
       <div className="menu-view">
+      
+       
           <div style={{ borderBottom: '1px solid #E9E9E9',padding:'4px 0 8px' }}>
             <AuthBotton 
              authname="menuadd" 
              onClick={e=>this.handleAddBtn(e,0)} 
              className="select-main-btn" 
               type="primary" size="default"> 添加一级菜单 </AuthBotton>
+              &nbsp;&nbsp;&nbsp;
+             <Button type="primary" icon="sync" onClick={()=>this.getAllMenuData()}>刷新</Button>
+
           </div>
           {/* 菜单列表 */}
+          <Spin spinning={this.state.loading} >
           <Menu
             mode='inline'
             theme='light'
@@ -220,6 +230,8 @@ const { SubMenu } = Menu;
           >
           {this.MenuItme(this.state.menuAllList)}
           </Menu>
+          </Spin >
+         
           {/* 添加菜单弹窗 */}
           <AddEditMeun
             meunFromData={this.state.meunFromData}

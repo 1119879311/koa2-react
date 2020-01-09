@@ -20,10 +20,10 @@ class index{
         if(option.tabId){
             return  ctx.body = await ctx.send(await postModel.findTabAll(option));
         }
-        // 搜索下的
-        if(option.search){
-            return  ctx.body = await ctx.send(await postModel.findSearchAll(option));
-        }
+        // // 搜索下的
+        // if(option.search){
+        //     return  ctx.body = await ctx.send(await postModel.findSearchAll(option));
+        // }
         // 所有的
         ctx.body = await ctx.send(await postModel.findAll(option));
     }
@@ -70,9 +70,9 @@ class index{
             }
     }
 
-    @POST("/add")
     @userAuth()
     @roleAuth()
+    @POST("/add")
     async add(ctx,next){
          // 数据校验
          var {title,content,cid,thumimg,remark,tabList=[]} = ctx.request.body;
@@ -87,17 +87,17 @@ class index{
      * @param {object} ctx.request.body 
      * @param {array} data =>[{id:1,status:1}]
      * */
-    @POST("/swtich")
     @userAuth()
     @roleAuth()
+    @POST("/swtich")
     async swtich(ctx,next){
             var {data=[]} = ctx.request.body;
             ctx.body = await ctx.send( await postModel.updateSwitch(data))
     }
     //单个更新所有
-    @POST("/update")
     @userAuth()
     @roleAuth()
+    @POST("/update")
     async update(ctx,next){
         // 数据校验
         var {id,title,content,thumimg,remark,tabList=[]} = ctx.request.body;
@@ -108,6 +108,8 @@ class index{
     }
 
     // 删除一个post
+    @userAuth()
+    @roleAuth()
     @POST("/delete")
     async del(ctx,next){
         var {id} = ctx.request.body;
@@ -116,18 +118,18 @@ class index{
 
      /**post 上传缩略图
      * */ 
-    @POST("/uploadThum")
     @userAuth()
     @roleAuth()
+    @POST("/uploadThum")
     async uploadThum(ctx,next){
         ctx.body = await ctx.send(postModel.uploadThum(ctx));
     }
 
     /**post 上传富文本编辑器的图片/文件
      * */ 
-    @POST("/uploadueimg")
     @userAuth()
     @roleAuth()
+    @POST("/uploadueimg")
     async uploadUeImg(ctx,next){
         ctx.body = await postModel.uploadUeImg(ctx);
         
