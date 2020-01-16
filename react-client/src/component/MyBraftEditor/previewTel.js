@@ -37,8 +37,9 @@
           }
           .container pre{
             padding: 15px;
-            background-color: #f1f1f1;
+            background-color: #000;
             border-radius: 5px;
+            color: #fff;
           }
           .container blockquote{
             margin: 0;

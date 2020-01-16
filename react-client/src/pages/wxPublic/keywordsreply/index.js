@@ -1,29 +1,30 @@
 import React, { Component } from 'react'
-import { Table,message,Input,Button,Select } from 'antd';
+import { Table,message ,Input,Select ,Button} from 'antd';
 import axios  from '../../../api/axios'
 import {dataFormat} from "../../../util"
 import AuthBotton from "../../../component/authButton/indexs";
-import AddEditJuzi from "./AddEdit"
+import AddEditCpt from "./AddEditCpt"
 import "./index.css"
-const { Option } = Select;
+const {Option} = Select
+
 export class index extends Component {
   state = {
-    //  列表数据
-     tableData:[],
      totalData:0,
      currentPage:1,
      pageSize:30,
      search_key:"",//搜索关键词
      status:'',
      loading:false,
+    //  列表数据
+     tableData:[],
      selectedRowKeys :[],//选择的key
      multipleSelection:[],//选择的数据
 
      // 添加编辑数据
      modalTitle:"", //添加、编辑的弹窗的标题
-     addEditTabIshow:false, //添加、编辑的弹窗的开关
-     tabFromData:{//添加、编辑的数据
-      id:"",content:"",author_from:"",classify:"",status:1
+     addEditIshow:false, //添加、编辑的弹窗的开关
+     FromData:{//添加、编辑的数据
+      id:"",keywords:"",reply:"",status:1
     },
   }
     // 同步更新state 的值
@@ -43,11 +44,11 @@ export class index extends Component {
   get tableColumns (){
     var that = this;
     return [
-      {title: '序号',	dataIndex: 'id',align: 'center',	key: 'id',width:90},
-      {title: '内容',	dataIndex: 'content',align: 'center',	key: 'content'},
-      {title: '出自/作者 ', align: 'center', dataIndex: 'author_from',key:"author_from",width:150},
-      {title: '分类', align: 'center', dataIndex: 'classify',key:"classify",width:120},
-      {title: '状态 ', align: 'center', dataIndex: 'status',key:"status",width:80,
+      {title: '序号',	dataIndex: 'id',align: 'center',	key: 'id',width:80},
+      {title: '关键词',	dataIndex: 'keywords',align: 'center',	key: 'keywords'},
+      {title: '回复内容',	dataIndex: 'reply',align: 'center',	key: 'reply'},
+      {title: '排序',	dataIndex: 'sort',align: 'center',	key: 'sort'},
+      {title: '状态 ', align: 'center', dataIndex: 'state',key:"status",
       render (text, record) {
          let color =record.status === 1 ? 'green' : 'red';
          let val = record.status === 1 ? '正常' : '禁用';
@@ -57,25 +58,25 @@ export class index extends Component {
          )
         }
       },
-      {title: '创建时间',	dataIndex: 'createtime',align: 'center',	key: 'createtime',width:180,
+      {title: '创建时间',	dataIndex: 'createtime',align: 'center',	key: 'createtime',
       render:(text, record) => (<span>{dataFormat(record.createtime)}</span>)
      },
-      {title: '操作', align: 'left', dataIndex: 'operation',kye:"operation", fixed: 'right',width: 150,
+      {title: '操作', align: 'left', dataIndex: 'operation',kye:"operation", fixed: 'right',width: 220,
       render:(text,record) =>{
         return (
           <div align="left" className="operation-main">
             
             <AuthBotton 
                 onClick={() => this.handleShowBtn(record)}
-              
-                authname="juziedit"
+                // authutil={this.props.authutil}
+                authname="keywordsreplyedit"
                 className="select-main-btn"  type="primary" size="default"> 编辑 </AuthBotton>
 
               {<AuthBotton 
                 onClick={()=>that.handleDelUser(record)}
                 className="select-main-btn"
-            
-                authname="juzidel"  type="danger" size="default"> 删除 </AuthBotton>}
+                // authutil={this.props.authutil}
+                authname="keywordsreplyDel"  type="danger" size="default"> 删除 </AuthBotton>}
           
         </div>   
         );
@@ -83,21 +84,37 @@ export class index extends Component {
       }
     ]
   }
-    // 获取表格数据
-     getTableData=async ()=>{
-       this.setState({loading:true})
+  // 获取表格数据
+   // 获取表格数据
+   getTableData=async ()=>{
+      this.setState({loading:true})
       let {pageSize,search_key,currentPage,status} =await this.state;
-      axios.GET("resourcejuzi",{page:currentPage,limit:pageSize,status:status||"",search_key}).then(res=>{
-       let {status,data,count} = res.data;
-       this.setState({loading:false})
-       console.log(data)
-       if(status){
-         this.setState({tableData:data,totalData:count,multipleSelection:[],selectedRowKeys:[]})
-       }else{
- 
-       }
-     })
-   }
+      axios.GET("keywordsReply",{page:currentPage,limit:pageSize,status:status||0,search_key}).then(res=>{
+        let {status,data,count} = res.data;
+        this.setState({loading:false})
+        console.log(data)
+        if(status){
+          this.setState({tableData:data,totalData:count,multipleSelection:[],selectedRowKeys:[]})
+        }else{
+
+        }
+      })
+  }
+  //  getTableData=()=>{
+  //   this.setState({loading:true})
+  //   axios.GET("keywordsReply",{status:0}).then( async res=>{
+  //     let {status,data} = res.data;
+  //     await this.setState({loading:false})
+  //     console.log(data)
+  //     if(status){
+  //       await this.setState({tableData:data,multipleSelection:[],selectedRowKeys:[]})
+  //       await this.onSubmitSearch();
+
+  //     }else{
+
+  //     }
+  //   })
+  // }
   //点击分页
   onChangePage=async (currentPage)=>{
     await this.setState({currentPage})
@@ -107,16 +124,16 @@ export class index extends Component {
   // 编辑和添加 按钮
   handleShowBtn(row){
     console.log(row)
-    var tabFromData = { id:"",content:"",author_from:"",classify:"",status:1,btnType:"add" };
+    var FromData = { id:"",keywords:"",reply:"",status:1,btnType:"add" };
     if(row){
       var modalTitle ="编辑";
-      tabFromData = JSON.parse(JSON.stringify(row));;
-      tabFromData["btnType"]="edit";
+      FromData = JSON.parse(JSON.stringify(row));;
+      FromData["btnType"]="edit";
       
     }else{
        modalTitle ="添加"
     }
-    this.setState({modalTitle,addEditTabIshow:true,tabFromData})
+    this.setState({modalTitle,addEditIshow:true,FromData})
   }
   // 删除
   handleDelUser(row){
@@ -124,7 +141,7 @@ export class index extends Component {
     if(row.status!==2) return  message.error("该处于正常状态无法删除,请编辑为禁用状态");
     var resConfirm = window.confirm("你确定删除吗")
     if(!resConfirm) return;
-    axios.POST("juziDel",{id:row.id}).then(result=>{
+    axios.POST("keywordsReplyDel",{id:row.id}).then(result=>{
       var  {status,mssage} = result.data;
       if(status){
          message.success(mssage||"删除成功");
@@ -154,7 +171,7 @@ export class index extends Component {
         default:
             break;
     }
-    axios.POST("juziSwtich",{data}).then(result=>{
+    axios.POST("keywordsReplySwtich",{data}).then(result=>{
      
       var  {status,mssage} = result.data;
       if(status){
@@ -179,29 +196,26 @@ export class index extends Component {
     }
     this.setState({ selectedRowKeys ,multipleSelection});
   };
-  // 点击搜索
-  onSubmitSearch = async ()=>{
+  onSubmitSearch= async ()=>{
     await this.setState({currentPage:1})
-    await this.getTableData();
-
+    await this.getTableData(); 
   }
   // 组件挂载时
   componentDidMount(){
-    this.getTableData(1);
+    this.getTableData();
     
   }
   render() {
-    const { selectedRowKeys,multipleSelection,tableData,modalTitle,addEditTabIshow,tabFromData } = this.state;
+    const { loading,selectedRowKeys,multipleSelection,tableData,modalTitle,addEditIshow,FromData } = this.state;
     const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
     };
     return (
-      <div className="rbacuser-view">
-
-        {/* 搜索 */}
-        <div className="col-12 m-flex search-wrap">
-           <Input placeholder="关键词/作者/分类" allowClear style={{width:"240px"}}
+      <div className="keywordsReply-view">
+       {/* 搜索 */}
+       <div className="col-12 m-flex search-wrap">
+           <Input placeholder="关键词" allowClear style={{width:"240px"}}
             onChange={(e)=>this.handleAsynChange('search_key',e.target.value)}/>
             <div>
              
@@ -209,23 +223,23 @@ export class index extends Component {
               <Select placeholder="请选择" allowClear
                 style={{width:"240px"}}
                 value={this.state.status}
-                onChange={(e)=>this.handleAsynChange('status',e)}>
+                onChange={(e)=>this.handleAsynChange('status',e)}
+                >
                 <Option value={1}>正常</Option>
                 <Option value={2}>禁用</Option>
               </Select>
             </div>
-
            <Button icon="search" type="primary" onClick={this.onSubmitSearch}>搜索</Button>
         </div>
         {/* 表格 */}
         <Table
+            loading = {loading}
             size="small"
             style={{"margin":"12px auto"}}
             rowKey = {row=>row.id}
             columns={this.tableColumns}
             rowSelection={rowSelection}
             dataSource={tableData}
-            loading={this.state.loading}
             pagination={{current:this.state.currentPage, pageSize: this.state.pageSize,onChange:(page)=>this.onChangePage(page), total:this.state.totalData }}
            
             scroll={{ x: 1050 }}
@@ -234,18 +248,18 @@ export class index extends Component {
               <div>
                  <AuthBotton  onClick={() => this.handleShowBtn("")} 
                   // authutil={this.props.authutil}
-                  authname="juziadd"
-                 className="select-main-btn"  type="primary" size="default"> 添加</AuthBotton>
+                  authname="keywordsreplyadd"
+                 className="select-main-btn"  type="primary" size="default"> 添加 </AuthBotton>
                  &nbsp;&nbsp;&nbsp;
                  <AuthBotton  className="select-main-btn"  type="primary" size="default"
                     // authutil={this.props.authutil}
-                    authname="juziswtich"
+                    authname="keywordsreplyswtich"
                     mydisabled={multipleSelection.filter(itme=>itme.status===2).length?'false':'true'}
                   onClick={() => this.handleSwitch('allStart')}>  全部启用</AuthBotton> 
                   &nbsp;&nbsp;&nbsp;
                 <AuthBotton  className="select-main-btn"  type="danger" size="default" 
                   // authutil={this.props.authutil}
-                  authname="juziswtich"
+                  authname="keywordsreplyswtich"
                   mydisabled={multipleSelection.filter(itme=>itme.status===1).length?'false':'true'}
                   onClick={() => this.handleSwitch('allStop')}> 全部停用 </AuthBotton>
                  </div>
@@ -254,12 +268,12 @@ export class index extends Component {
         
           
              {/* 添加编辑的弹框 */}
-            <AddEditJuzi 
+            <AddEditCpt 
             getTableData={this.getTableData.bind(this)} 
             modalTitle={modalTitle} 
             handleAsynChange={this.handleAsynChange.bind(this)} 
-            addEditTabIshow={addEditTabIshow} 
-            tabFromData={tabFromData}
+            addEditIshow={addEditIshow} 
+            FromData={FromData}
             />
         </div>
     )

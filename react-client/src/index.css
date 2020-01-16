@@ -55,4 +55,5 @@ a{text-decoration: none}
 
 .search-wrap>:nth-child(n){
   margin-right: 15px;
+  margin-bottom: 6px;
 }

@@ -70,7 +70,7 @@ export class index extends Component {
       {title: '创建时间',	dataIndex: 'createtime',align: 'center',	key: 'createtime',width:180,
       render:(text, record) => (<span>{dataFormat(record.createtime)}</span>)    
       },
-      {title: '操作', align: 'left', dataIndex: 'operation',kye:"operation", fixed: 'right',width: 280,
+      {title: '操作', align: 'left', dataIndex: 'operation',kye:"operation", fixed: 'right',width: 290,
       render:(text,record) =>{
         return (
           <div align="left">

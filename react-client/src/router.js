@@ -125,9 +125,26 @@ export const allRouter =  [
     // 5.1 精美句子
     { 
         path:"/admin/resourcejuzi",
-        component:Loadable({loader: () => import('./pages/resource/juzi/index'), loading: MyLoadingComponent}),
+        component:Loadable({loader: () => import('./pages/resource/juzi'), loading: MyLoadingComponent}),
         title:"精美句子",
         name:"resourcejuzi",
         isAuthName:"resourcejuzi"
+    },
+     // 5.2 云盘资源
+     { 
+        path:"/admin/cloudresources",
+        component:Loadable({loader: () => import('./pages/resource/cloudres'), loading: MyLoadingComponent}),
+        title:"云盘资源",
+        name:"cloudresources",
+        isAuthName:"cloudres"
+    },
+    // 微信管理
+    // 1.公众号关键词自动回复
+    { 
+        path:"/admin/keywordsreply",
+        component:Loadable({loader: () => import('./pages/wxPublic/keywordsreply'), loading: MyLoadingComponent}),
+        title:"关键词回复",
+        name:"keywordsreply",
+        isAuthName:"keywordsreply"
     }
   ]

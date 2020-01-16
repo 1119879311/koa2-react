@@ -40,11 +40,11 @@ export class index extends Component {
   get tableColumns (){
     var that = this;
     return [
-      {title: '序号',	dataIndex: 'id',align: 'center',	key: 'id',width:80},
+      {title: '序号',	dataIndex: 'id',align: 'center',	key: 'id',width:60},
       {title: '权限名称',	dataIndex: 'name',align: 'center',	key: 'name',width:120},
-      {title: '权限标识',	dataIndex: 'identName',align: 'center',	key: 'identName',width:150},
-      {title: '权限链接',	dataIndex: 'url',align: 'center',	key: 'url',width:150},
-      {title: '权限分组',	dataIndex: 'groupName',align: 'center',	key: 'groupName',width:150},
+      {title: '权限标识',	dataIndex: 'identName',align: 'center',	key: 'identName',width:120},
+      {title: '权限链接',	dataIndex: 'url',align: 'center',	key: 'url',width:180},
+      {title: '权限分组',	dataIndex: 'groupName',align: 'center',	key: 'groupName',width:120},
       {title: '状态 ', align: 'center', dataIndex: 'state',kye:"status",width:80,
       render (text, record) {
          let color = record.status === 1 ? 'green' : 'red';
@@ -55,7 +55,7 @@ export class index extends Component {
          )
         }
       },
-      {title: '创建时间',	dataIndex: 'createtime',align: 'center',	key: 'createtime',width:230,
+      {title: '创建时间',	dataIndex: 'createtime',align: 'center',	key: 'createtime',width:150,
        render:(text, record) => (<span>{dataFormat(record.createtime)}</span>)
       },
       {title: '操作', align: 'left', dataIndex: 'operation',kye:"operation", fixed: 'right',width: 210,

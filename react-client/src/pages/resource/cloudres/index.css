@@ -1,0 +1,25 @@
+.ant-table-fixed-right .ant-table-fixed{
+  background: #f0f2f5
+}
+
+.modal-form-main .form-itmes{
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.modal-form-main .form-itmes .itme-labe{
+  width: 100px;
+  text-align: right;
+}
+
+.handlestatus-box{
+   /* position: absolute; */
+   transform: translateY(-175%);
+}
+.operation-main button{
+  margin-right: 2px
+}
+.search-wrap{
+  flex-wrap: wrap
+}
+

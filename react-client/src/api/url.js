@@ -94,3 +94,21 @@ export let juziAdd = `/juzi/add`;
 export let juziUpdate = `/juzi/update`;
 export let juziSwtich = `/juzi/swtich`;
 export let juziDel = `/juzi/delete`;
+
+// 云盘资源
+export let cloudresources = `/cloudresources`;
+export let cloudresAdd = `/cloudresources/add`;
+export let cloudresUpdate = `/cloudresources/update`;
+export let cloudresSwtich = `/cloudresources/swtich`;
+export let cloudresDel = `/cloudresources/delete`;
+
+
+// 微信管理模块
+
+// 公众号关键词回复
+export let keywordsReply = `/keywordsReply`;
+export let keywordsReplyAdd = `/keywordsReply/add`;
+export let keywordsReplyUpdate = `/keywordsReply/update`;
+export let keywordsReplySwtich = `/keywordsReply/swtich`;
+export let keywordsReplyDel = `/keywordsReply/delete`;
+

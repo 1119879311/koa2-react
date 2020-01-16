@@ -36,7 +36,7 @@ export class index extends Component {
           <div align="center">
            <AuthBotton  className="select-main-btn"  type="primary" size="default"
                 authname="savewxno"
-                onClick={() => that.handleShowBtn(record)}>  添加</AuthBotton> 
+                onClick={() => that.handleShowBtn(record)}>  编辑</AuthBotton> 
             {/* <Button onClick={() => that.handleShowBtn(record)} className="select-main-btn"  type="primary" size="default"> 编辑 </Button> */}
             &nbsp;&nbsp;&nbsp;
             <AuthBotton  className="select-main-btn"  type="danger" size="default"
