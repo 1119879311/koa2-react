@@ -214,7 +214,7 @@ class model extends connect{
      * 示例：
      * sql：update tk_table SET status = case id where 1 then 2 where 2 then 1 end where id in (1,2);
      */
-     async updateMany(options={}){
+    async updateMany(options={}){
         try {
             if(!sqlParse.isArray(options.values)||!options.values.length){
                 return  Promise.reject(this.error("updata data is must Array"));
@@ -234,16 +234,16 @@ class model extends connect{
                     }else{
                     if(optArr[key]){
                         if(index==values.length-1){
-                            optArr[key].push([`when ${itme[where.key]} then  ${this.escape(itme[key])} end`]);
+                            optArr[key].push([`when ${this.escape(itme[where.key])} then  ${this.escape(itme[key])} end`]);
                         }else{
-                            optArr[key].push([`when ${itme[where.key]} then  ${this.escape(itme[key])}`]);
+                            optArr[key].push([`when ${this.escape(itme[where.key])} then  ${this.escape(itme[key])}`]);
                         }
                         
                     }else{
                         if(index==values.length-1){
-                            optArr[key] = [`${key} = case ${where.key} when ${itme[where.key]} then  ${this.escape(itme[key])} end`];
+                            optArr[key] = [`${key} = case ${where.key} when ${this.escape(itme[where.key])} then  ${this.escape(itme[key])} end`];
                         }else{
-                            optArr[key] = [`${key} = case ${where.key} when ${itme[where.key]} then  ${this.escape(itme[key])}`];
+                            optArr[key] = [`${key} = case ${where.key} when ${this.escape(itme[where.key])} then  ${this.escape(itme[key])}`];
                         }
                     }
 
@@ -255,7 +255,7 @@ class model extends connect{
             for (var keys in optArr) {
             whenArr.push(`${optArr[keys].join(" ")}`);
             }
-            var sqlStr=`update ${options.table} set ${whenArr.join(',')} where id in (${whereArr.join(",")})`;
+            var sqlStr=`update ${options.table} set ${whenArr.join(',')} where ${options.where.key} in (${whereArr.join(",")})`;
             if(options.build) return await sqlStr;
            return   await this.execsql(sqlStr);
 
@@ -264,6 +264,7 @@ class model extends connect{
         }
   
     }
+   
    
     /**
      * @param {object} options 
