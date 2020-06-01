@@ -5,7 +5,6 @@ const tabModel = imports("models/tab");
 const logicPost =imports("logic/post");
 const {userAuth,roleAuth} = imports("Lib/permission")
 
-
 @Controller("/post")
 class index{
 
