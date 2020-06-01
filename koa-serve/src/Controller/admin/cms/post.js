@@ -4,6 +4,7 @@ const postModel = imports("models/post");
 const cateModel = imports("models/cate");
 const tabModel = imports("models/tab");
 const logicPost =imports("logic/post");
+
 const {userAuth,roleAuth} = imports("Lib/permission")
 
 @Controller("/post")
