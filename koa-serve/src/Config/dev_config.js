@@ -8,7 +8,7 @@ module.exports = {
     mysql:{
         "host": "localhost",//主机名/ip
         "user": "root",//用户名
-        "password": "root",//密码
+        "password": "123456",//密码
         "port": 3306,//端口
         "database": "nodemanage", //连接的库
         "debug":true

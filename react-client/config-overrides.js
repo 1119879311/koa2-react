@@ -1,18 +1,18 @@
 const { override, fixBabelImports ,addWebpackExternals ,addWebpackAlias ,addLessLoader } = require('customize-cra');
 const path = require("path")
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin")
-const myPlugin = [
-  new UglifyJsPlugin(
-    {
-      uglifyOptions: {
-        warnings: false,
-        compress: {
-          drop_debugger: true,
-          drop_console: true
+const byPlugin = [
+    new UglifyJsPlugin(
+        {
+            uglifyOptions:{
+                warnings:false,
+               compress:{
+                   drop_debugger:true,
+                   drop_console:true
+               }
+            }
         }
-      }
-    }
-  )
+    )
 ]
 
 module.exports = override( 
@@ -37,8 +37,10 @@ module.exports = override(
   (config)=>{ //暴露webpack的配置 config ,evn
     // 去掉打包生产map 文件
     // config.devtool = config.mode === 'development' ? 'cheap-module-source-map' : false;
-    if(process.env.NODE_ENV==="production") config.devtool=false;
-    if(process.env.NODE_ENV!=="development") config.plugins = [...config.plugins,...myPlugin]
+    if(process.env.NODE_ENV==="production") config.devtool = false;
+    if(process.env.NODE_ENV!=="development") config.plugins = [...config.plugins,...byPlugin]
+    // if(process.env.NODE_ENV==="production") config.devtool=false;
+    // if(process.env.NODE_ENV!=="development") config.plugins = [...config.plugins,...myPlugin]
     //1.修改、添加loader 配置 :
     // 所有的loaders规则是在config.module.rules(数组)的第二项 
     // 即：config.module.rules[2].oneof  (如果不是，具体可以打印 一下是第几项目)

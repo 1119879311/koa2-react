@@ -61,11 +61,9 @@ class App extends Component {
   render() {
     // logo 
     var layoutLogo = (
-      <div className="logo"  >
-          BEYOND
-      </div>
+      <div className="logo"> system </div>
     )
-
+    let {collapsed} = this.state
     return (
       <Layout style={{height:"100%"}}>
        <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
@@ -73,7 +71,7 @@ class App extends Component {
         <LayoutSider  meunList={this.state.meunList}/>
       </Sider>
       <Layout>
-        <Header className="layout-header" >
+        <Header className="layout-header" style={{"left":collapsed?"80px":"200px"}} >
           <Icon
             className="trigger"
             type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
