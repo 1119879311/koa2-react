@@ -173,10 +173,10 @@ let diGuiAdd = (data = [],idField="id",pidField="pid",countField = "count")=>{
     var cloneData = JSON.parse(JSON.stringify(data));
         function fn(cloneData,cid,count){
             var counts = count ;
-            cloneData.forEach(async (ele)=>{
+            cloneData.forEach( (ele)=>{
                 if(ele[pidField]==cid){
                     counts +=ele[countField];
-                    counts+=await fn(cloneData, ele[idField], counts);
+                    counts+= fn(cloneData, ele[idField], counts);
                 }
             });
             return  counts;
@@ -188,14 +188,14 @@ let diGuiAdd = (data = [],idField="id",pidField="pid",countField = "count")=>{
     }
     exports.diGuiAdd = diGuiAdd
     let deepCopy  =  (obj)=> {//对象拷贝：深拷贝
-    if (typeof obj != "object") return obj;
-    var newObj = new Object();
-    for (var i in obj) {
-        newObj[i] = deepCopy(obj[1])
-    }
-    return newObj
+            if (typeof obj != "object") return obj;
+            var newObj = new Object();
+            for (var i in obj) {
+                newObj[i] = deepCopy(obj[1])
+            }
+            return newObj
 
-}
+        }
 exports.deepCopy = deepCopy
 
 class weightAllocation{

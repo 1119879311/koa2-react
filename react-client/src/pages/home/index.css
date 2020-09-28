@@ -3,16 +3,38 @@
   border: 0;
 }
 .gutter-box {
-  background: #1da57a;
-  color: #fff;
+  background: #fff;
+  color: #000;
   border-radius: 8px;
   padding: 5px 12px;
   min-height: 150px;
   transition: all 0.4s linear;
-  box-shadow: 0px 0px 5px #8c8f92;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 18px;
+  text-shadow: 0 0 10px  #fff;
+  line-height: 36px;
 }
 .gutter-box:hover{
-  box-shadow: 0px 0px 10px #1890ff;
+  box-shadow: 0px 0px 10px 0 #fff;
   transition: all 0.4s linear;
 
+}
+
+.gutter-box .box-text{
+    font-size: 24px;
+    font-weight: bold;
+}
+
+
+/* line-statias.js */
+.home-charts{
+    width: 100%;
+    height: 450px;
+    background-color: #fff;
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px 5px #999;
 }

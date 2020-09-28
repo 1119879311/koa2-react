@@ -1,6 +1,4 @@
-.rbacuser-view{
-  position: relative;
-}
+
 .ant-table-fixed-left .ant-table-fixed,
 .ant-table-fixed-right .ant-table-fixed{
   background: #f0f2f5
@@ -19,4 +17,32 @@
 .handlestatus-box{
    /* position: absolute; */
    transform: translateY(-175%);
+}
+
+
+.auth-list-main .list-itme{
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    /* box-shadow: 0 0 10px 5px #999; */
+    border-radius: 5px;
+    padding: 12px;
+    margin-bottom: 12px;
+}
+.auth-list-main  .list-itme-content{
+    flex: 1;
+    text-align: center;
+}
+.auth-list-main .list-itme-handle{
+    display: flex;
+    flex-direction: column;
+}
+.auth-list-main .by-divider::before,
+.auth-list-main .by-divider::after
+{
+    border-color: #fff;
+}
+
+.auth-list-main .select-main-btn{
+    margin-bottom: 2px;
 }

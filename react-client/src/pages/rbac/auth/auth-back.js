@@ -1,69 +1,12 @@
-import React, { Component ,Fragment} from 'react'
-import { message ,Input,Select ,Button ,Row,Col,Divider} from 'antd';
+import React, { Component } from 'react'
+import { Table,message ,Input,Select ,Button } from 'antd';
 import axios  from '../../../api/axios'
+import {dataFormat} from "../../../util"
 import AddEditAuth from './AddEditAuth' // 编辑、添加权限
 import {connect} from "react-redux"
 import AuthBotton from "../../../component/authButton/indexs";
 import  "./index.css"
 const {Option} = Select
-function ListMain(props){
-    let {dataList = [],handleShowBtn} = props
-    return <div className="auth-list-main">
-            {
-                dataList.map((val,index)=>(
-                  <Fragment key={index}>
-                  <div style={{margin:"12px 6px"}} >
-                
-                    <Divider orientation="left" className="by-divider">
-                        {val.key}
-                        &nbsp;
-                        <AuthBotton  
-                            authname="authadd" 
-                            onClick={() => handleShowBtn({"groupName":val.key})} 
-                            className="select-main-btn"   size="default"> 添加权限
-                        </AuthBotton>
-                    </Divider>
-                    <Row justify="space-between" style={{marginLeft:"12px"}}  gutter={24}>
-                        {val.value.map(itme=> <Col span={4}  key={itme.id}> <ListItme itme={itme} {...props}/> </Col>)}
-                    </Row>
-                  </div>
-                   
-                 </Fragment> 
-                ))
-              }
-    </div>
-}
-
-function ListItme(props){
-    let {itme={},user_info={},handleShowBtn,handleSwitch,handleDelBtn} = props
-    return <div className="list-itme">
-        <div className="list-itme-content" style={{color:itme.status === 1?'#1DA57A':'red'}}>
-            <div>{itme.name}</div>
-            <div>{itme.identName}</div>
-        </div>
-        <div className="list-itme-handle">
-        <AuthBotton 
-              onClick={() => handleShowBtn(itme)} 
-              authname="authedit"  className="select-main-btn" 
-               type="primary" size="small"> 编辑/查看 </AuthBotton>
-           
-            <AuthBotton 
-               className="select-main-btn"  authname="authswtich" 
-                type={itme.status === 1 ? 'danger' : 'primary'}  size="small" 
-                onClick={() => handleSwitch(1,itme)}>
-                 {itme.status === 1 ? '禁用' : '开启'} </AuthBotton>
-           
-            {user_info.user_type !== 1&&user_info.user_type !== 2?""
-             :<AuthBotton className="select-main-btn" 
-               onClick={()=>handleDelBtn(itme)}
-               authname="authdel"
-               type="danger" size="small"> 删除 </AuthBotton>}
-           
-        </div>
-
-    </div>
-}
-
 export class index extends Component {
   state = {
      search_key:"",
@@ -79,7 +22,6 @@ export class index extends Component {
       id:"",name:"",identName:"",url:"",groupName:"",status:1
     },
     groupArr:[],//权限分组(根据菜单分组)
-    groupListArr:[]
   }
     // 同步更新state 的值
     handleAsynChange =(key,value,obj)=>{
@@ -94,14 +36,73 @@ export class index extends Component {
       
     }
    
- 
-  // 获取列表数据
+  // 表格列
+  get tableColumns (){
+    var that = this;
+    return [
+      {title: '序号',	dataIndex: 'id',align: 'center',	key: 'id',width:60},
+      {title: '权限名称',	dataIndex: 'name',align: 'center',	key: 'name',width:120},
+      {title: '权限标识',	dataIndex: 'identName',align: 'center',	key: 'identName',width:120},
+      {title: '权限链接',	dataIndex: 'url',align: 'center',	key: 'url',width:180},
+      {title: '权限分组',	dataIndex: 'groupName',align: 'center',	key: 'groupName',width:120},
+      {title: '状态 ', align: 'center', dataIndex: 'state',kye:"status",width:80,
+      render (text, record) {
+         let color = record.status === 1 ? 'green' : 'red';
+         let val = record.status === 1 ? '正常' : '禁用';
+
+         return (
+            <span style={{color}}>{val}</span>
+         )
+        }
+      },
+      {title: '创建时间',	dataIndex: 'createtime',align: 'center',	key: 'createtime',width:150,
+       render:(text, record) => (<span>{dataFormat(record.createtime)}</span>)
+      },
+      {title: '操作', align: 'left', dataIndex: 'operation',kye:"operation", fixed: 'right',width: 210,
+      render:(text,record) =>{
+        return (
+          <div align="left">
+            <AuthBotton 
+              onClick={() => this.handleShowBtn(record)} 
+              authname="authedit"  className="select-main-btn" 
+               type="primary" size="default"> 编辑 </AuthBotton>
+            &nbsp;&nbsp;&nbsp;
+            <AuthBotton 
+               className="select-main-btn"  authname="authswtich" 
+                type={record.status === 1 ? 'danger' : 'primary'}  size="default" 
+                onClick={() => this.handleSwitch(1,record)}>
+                 {record.status === 1 ? '禁用' : '开启'} </AuthBotton>
+            &nbsp;&nbsp;&nbsp;
+            {that.props.user_info.user_type !== 1&&that.props.user_info.user_type !== 2?""
+             :<AuthBotton className="select-main-btn" 
+               onClick={()=>that.handleDelBtn(record)}
+               authname="authdel"
+               type="danger" size="default"> 删除 </AuthBotton>}
+          </div>
+        );
+      }
+      }
+    ]
+  }
+  // 获取表格数据
    getTableData =  ()=>{
      this.setState({loading:true})
     axios.GET("rbacAuth").then( async res=>{
       let {status,data} = res.data;
       console.log(data)
-      this.handleAuthListGroup(data)
+      let groupListAuth  = {};
+      data.forEach(itme=>{
+          if(groupListAuth[itme.groupName]){
+            groupListAuth[itme.groupName].push(itme)
+          }else{
+            groupListAuth[itme.groupName] = [itme]
+          }
+      })
+      let groupListArr = []
+      for (const key in groupListAuth) {
+        groupListArr.push({key,value:groupListAuth[key]})
+      }
+      console.log(groupListArr)
       this.setState({loading:false})
       if(status){
         await this.setState({tableData:data,multipleSelection:[],selectedRowKeys:[]})
@@ -111,24 +112,6 @@ export class index extends Component {
       }
     })
   }
-
-  // 对权限列表分组
-   handleAuthListGroup(data){
-    let groupListAuth  = {};
-    data.forEach(itme=>{
-        if(groupListAuth[itme.groupName]){
-          groupListAuth[itme.groupName].push(itme)
-        }else{
-          groupListAuth[itme.groupName] = [itme]
-        }
-    })
-    let groupListArr = []
-    for (const key in groupListAuth) {
-      groupListArr.push({key,value:groupListAuth[key]})
-    }
-    this.setState({groupListArr})
-
-   }
    // 获取权限分组(菜单)数据所有
    getAllMenuData(){
     axios.GET("rbacMenu").then(result=>{
@@ -144,15 +127,13 @@ export class index extends Component {
   // 编辑和添加 按钮
   handleShowBtn(row){
     var authFromData = { id:"",name:"",identName:"",url:"",groupName:"",status:1,btnType:"add" };
-    if(row&&row.id){
+    if(row){
       var modalTitle ="编辑";
       authFromData = row;
       authFromData["btnType"]="edit";
       
     }else{
        modalTitle ="添加"
-       row = row?row:{}
-       authFromData = Object.assign({},authFromData,row)
     }
     this.setState({modalTitle,addEditAuthIshow:true,authFromData})
   }
@@ -206,7 +187,21 @@ export class index extends Component {
     })
       
   }
-
+  // 点击选择时操作
+  onSelectChange = selectedRowKeys => {
+    console.log('selectedRowKeys changed: ', selectedRowKeys);
+    let {tableData} = this.state;
+    let multipleSelection = [];
+    for (let index = 0; index < selectedRowKeys.length; index++) {
+      let val = selectedRowKeys[index];
+      multipleSelection= [...multipleSelection,...(tableData.filter(itme=>itme.id===val))]
+    }
+    console.log(multipleSelection)
+    this.setState({ selectedRowKeys ,multipleSelection});
+  };
+   handleChange(value) {
+    console.log(`selected ${value}`);
+  }
   onSubmitSearch= async ()=>{
     let {search_key,status,tableData} =await this.state;
     let resData = tableData;
@@ -219,8 +214,7 @@ export class index extends Component {
             ||itme.identName.includes(search_key)||itme.url.includes(search_key)
       })
     }
-    this.handleAuthListGroup(resData)
-    // this.setState({rendTableData:resData})  
+    this.setState({rendTableData:resData})  
   }
   // 组件挂载时
   componentDidMount(){
@@ -229,8 +223,12 @@ export class index extends Component {
 
   }
   render() {
-    const { modalTitle,addEditAuthIshow,authFromData } = this.state;
-   
+    const { selectedRowKeys,loading,multipleSelection,rendTableData ,modalTitle,addEditAuthIshow,authFromData } = this.state;
+    const rowSelection = {
+      selectedRowKeys,
+      onChange: this.onSelectChange,
+      fixed:true
+    };
     return (
       <div className="rbacuser-view">
         {/* 搜索 */}
@@ -251,24 +249,45 @@ export class index extends Component {
             </div>
            <Button icon="search" type="primary" onClick={this.onSubmitSearch}>搜索</Button>
            <Button type="primary" icon="sync" onClick={()=>this.getTableData()}>刷新</Button>
-           <AuthBotton  
-            authname="authadd" 
-            onClick={() => this.handleShowBtn("")} 
-            className="select-main-btn"  type="primary" size="default"> 添加权限
-        </AuthBotton>
         </div>
-        
-        <Divider />
-         <ListMain 
-         dataList={this.state.groupListArr}
-         handleShowBtn={this.handleShowBtn.bind(this)} 
-         handleSwitch={this.handleSwitch.bind(this)} 
-         handleDelBtn={this.handleDelBtn.bind(this)} 
-         user_info={this.props.user_info}
 
-         />
-         {/* handleShowBtn,handleSwitch,handleDelBtn */}
-       
+        {/* 表格 */}
+        <Table
+            loading={loading}
+            size="small"
+            style={{"margin":"12px auto"}}
+            rowKey = {row=>row.id}
+            columns={this.tableColumns}
+            rowSelection={rowSelection}
+            dataSource={rendTableData}
+            pagination={{ pageSize: 15 }}
+            scroll={{ x: 1050 }}
+            bordered
+            title={() => (
+              <div>
+                 
+                  <AuthBotton  
+                     authname="authadd" 
+                     onClick={() => this.handleShowBtn("")} 
+                     className="select-main-btn"  type="primary" size="default"> 添加权限
+                  </AuthBotton>
+                   &nbsp;&nbsp;&nbsp;
+                  <AuthBotton 
+                      authname="authswtich" 
+                      className="select-main-btn"  type="primary" size="default"
+                      mydisabled={multipleSelection.filter(itme=>itme.status===2).length?false:true}
+                      onClick={() => this.handleSwitch('allStart')}>  全部启用
+                    </AuthBotton>
+                   &nbsp;&nbsp;&nbsp;
+                   <AuthBotton 
+                       authname="authswtich" 
+                      className="select-main-btn"  type="danger" size="default" 
+                      mydisabled={multipleSelection.filter(itme=>itme.status===1).length?false:true}
+                      onClick={() => this.handleSwitch('allStop')}> 全部停用 
+                    </AuthBotton>
+              </div>   
+          )}
+          />
          
           {/* 添加编辑管理员的弹框 */}
           <AddEditAuth 

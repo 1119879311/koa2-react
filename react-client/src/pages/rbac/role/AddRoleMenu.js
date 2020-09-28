@@ -75,7 +75,7 @@ export default class AddRoleMenu extends Component {
     data.map(item => {
       if (item.children) {
         return (
-          <TreeNode title={item.title} key={item.id} dataRef={item}>
+          <TreeNode title={item.title} key={item.id} dataRef={item} disableCheckbox={item.status===1?false:true}>
             {this.renderTreeNodes(item.children)}
           </TreeNode>
         );
@@ -102,6 +102,7 @@ export default class AddRoleMenu extends Component {
         <br/>
         <Tree
           checkable
+          
           onExpand={this.onExpand}
           expandedKeys={this.state.expandedKeys}
           autoExpandParent={this.state.autoExpandParent}

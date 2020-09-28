@@ -15,6 +15,7 @@ const logs = {
 
 let logsInfo = (async (ctx,next)=>{//捕获正常请求日志
     //过滤静态资源 .ico .jpg,.jpeg,.png,.svg,.gif,.mp3,.mp4
+   
     if(/.(ico|png|jpg|jpeg|gif|svg|pm3|pm4)+$/.test(ctx.request.url)) {
         await next();
     }else{
@@ -23,6 +24,7 @@ let logsInfo = (async (ctx,next)=>{//捕获正常请求日志
         logs.info(logStr);
         await next()
     }
+  
    
 })
 let logsError = async (err,ctx)=>{//捕获异常记录错误日志
